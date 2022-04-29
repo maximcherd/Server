@@ -25,6 +25,6 @@ public class PictureController {
     @GetMapping("/controller")
     @ApiOperation("Test function")
     void test() {
-
+        //test
     }
 }
