@@ -3,15 +3,18 @@ package vsu.cs.server.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import vsu.cs.server.repository.PictureRepository;
 import vsu.cs.server.repository.UserRepository;
 
-@RestController
-@RequestMapping("/controller")
-@Api(description = "Picture controller")
+import java.security.Principal;
+
+@Controller
+@RequestMapping("/picture")
+@Api(description = "picture controller")
 public class PictureController {
     private PictureRepository pictureRepository;
     private UserRepository userRepository;
@@ -22,9 +25,12 @@ public class PictureController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/controller")
+    @GetMapping("/test")
     @ApiOperation("Test function")
-    void test() {
-        //test
+    public String test(
+//            Principal principal,
+            Model model
+    ) {
+        return "picture/test";
     }
 }

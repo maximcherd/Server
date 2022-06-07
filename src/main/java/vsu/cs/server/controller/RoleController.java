@@ -7,14 +7,15 @@ import vsu.cs.server.repository.RoleRepository;
 import vsu.cs.server.repository.UserRepository;
 
 @Controller
-@Api(description = "user controller")
-public class UserController {
+@Api(description = "role controller")
+public class RoleController {
     private RoleRepository roleRepository;
-    private UserRepository userRepository;
+    private UserRepository repository;
 
     @Autowired
-    public UserController(RoleRepository roleRepository, UserRepository userRepository) {
+    public RoleController(RoleRepository roleRepository, UserRepository repository) {
         this.roleRepository = roleRepository;
-        this.userRepository = userRepository;
+        this.repository = repository;
     }
+
 }

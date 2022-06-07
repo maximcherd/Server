@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import vsu.cs.server.model.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, Long> {
 }

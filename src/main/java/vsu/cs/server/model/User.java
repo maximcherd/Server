@@ -7,24 +7,19 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @Entity
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Table(name = "user")
 public class User {
     @Id
-    @NotBlank
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, updatable = false, name = "id")
+    private Long id;
+
     @Column(nullable = false, updatable = false, name = "login")
     private String login;
 
-    @NotBlank
-    @Column(nullable = false, name = "passHash")
-    private String passHash;
+    @Column(nullable = false, name = "password")
+    private String password;
 
-    @NotBlank
     @Column(nullable = false, name = "name")
     private String name;
 
@@ -33,11 +28,10 @@ public class User {
     private String mail;
 
     @Pattern(regexp = "^\\+[0-9]+$")
-    @Column(nullable = false, name = "phone")
+    @Column(name = "phone")
     private String phone;
 
-    @NotBlank
     @ManyToOne
     @JoinColumn(name = "role", referencedColumnName = "id")
-    private UserRole role;
+    private Role role;
 }

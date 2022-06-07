@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import vsu.cs.server.model.Picture;
 
 @Repository
-public interface PictureRepository extends JpaRepository<Picture, String> {
+public interface PictureRepository extends JpaRepository<Picture, Long> {
 }
