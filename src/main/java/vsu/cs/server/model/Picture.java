@@ -16,9 +16,6 @@ public class Picture {
     @JoinColumn(name = "creator", referencedColumnName = "login")
     private User creator;
 
-    @Column(nullable = false, name = "name")
-    private String name;
-
     @Column(nullable = false, name = "url")
     private String url;
 
@@ -35,12 +32,12 @@ public class Picture {
     public Picture() {
     }
 
-    public Picture(User creator, String name, String url, Date creationDate, Boolean isPublic) {
+    public Picture(User creator, String url, Date creationDate, Boolean isPublic) {
         this.creator = creator;
-        this.name = name;
         this.url = url;
         this.creationDate = creationDate;
         this.isPublic = isPublic;
+        this.source = null;
     }
 
     public Long getId() {
@@ -57,14 +54,6 @@ public class Picture {
 
     public void setCreator(User creator) {
         this.creator = creator;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getUrl() {

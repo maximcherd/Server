@@ -38,6 +38,11 @@ public class User implements UserDetails {
     @JoinColumn(name = "role", referencedColumnName = "id")
     private Role role;
 
+    @Transient
+    public String getPhotosImagePath() {
+        return "/user-photos/" + id + "/";
+    }
+
     public User() {
     }
 

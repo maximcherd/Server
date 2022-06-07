@@ -53,7 +53,6 @@ public class PictureController {
     @PostMapping("/add")
     public String addPost(
             @RequestParam("image") MultipartFile multipartFile,
-            @RequestParam String name,
             @RequestParam Boolean isPublic,
             Principal principal,
             Model model) throws IOException {
@@ -67,7 +66,8 @@ public class PictureController {
         model.addAttribute("isAdmin", WebSecurityConfig.isAdmin());
         Date creationDate = new Date();
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
-        Picture picture = new Picture(creator, name, fileName, creationDate, isPublic);
+        Picture picture = new Picture(creator, fileName, creationDate, isPublic);
+        pictureService.add(picture);
         String uploadDir = "user-photos/" + creator.getId();
         FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
 
