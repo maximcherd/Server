@@ -15,8 +15,10 @@ import vsu.cs.server.service.UserService;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private static final String C_ROLE_USER = "ROLE_USER";
-    private static final String C_ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String C_ROLE_USER = "ROLE_USER";
+    public static final Long C_ROLE_USER_ID = 1L;
+    public static final String C_ROLE_ADMIN = "ROLE_ADMIN";
+    public static final Long C_ROLE_ADMIN_ID = 2L;
 
     @Autowired
     UserService userService;
@@ -27,16 +29,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/**", "/blocks/**", "/css/**", "/images/**", "/home/**").permitAll()
+                .antMatchers("/authentication/**").not().fullyAuthenticated()
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**", "/profile/**").hasRole("USER")
-                .antMatchers("/admin/**", "/profile/**").hasRole("ADMIN")
-                .antMatchers("/login", "/registration").not().fullyAuthenticated()
+                .antMatchers("/", "/blocks/**", "/css/**", "/images/**", "/home/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/user/scroll")
-                .failureUrl("/login?error=true")
+                .loginPage("/authentication/login")
+                .defaultSuccessUrl("/home/about")
+                .failureUrl("/authentication/login?error=true")
                 .permitAll()
                 .and()
                 .logout()

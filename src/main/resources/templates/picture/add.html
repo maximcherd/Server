@@ -16,22 +16,19 @@
 </head>
 <body>
 <header th:insert="blocks/navbar :: navbar"></header>
+
 <main>
     <section class="py-5 text-center container">
         <div class="row py-lg-5">
-            <div class="mx-auto">
-                <h1 class="fw-light">О проекте ShapeShifter</h1>
-                <p class="lead text-muted">
-                    Данный проект разбатывался в ходе курса обучения по предмету "Тенологии программирования"
-                    <br>
-                    Тема проекта: разработка мобильного приложения по обработке изображений и выводу ленты по дате
-                    <br>
-                    Выполнено студентом 3 курса 2 группы Чердакли М.Д.
-                </p>
+            <form method="post" th:action="${#httpServletRequest.requestURI}" class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Загрузка изображений</h1>
+                <input type="file" name="image" accept="image/png, image/jpeg" class="btn btn-secondary my-2">
+                <input type="checkbox" name="isPublic" id="isPublic" checked class="btn btn-secondary my-2">
+                <label for="isPublic">публичное</label>
                 <p>
-                    <a href="#" class="btn btn-secondary my-2">Мой GitHub</a>
+                    <button type="submit" class="btn btn-primary my-2">Загрузить</button>
                 </p>
-            </div>
+            </form>
         </div>
     </section>
 </main>

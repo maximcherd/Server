@@ -2,6 +2,7 @@ package vsu.cs.server.model;
 
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "picture")
@@ -18,14 +19,28 @@ public class Picture {
     @Column(nullable = false, name = "name")
     private String name;
 
+    @Column(nullable = false, name = "url")
+    private String url;
+
+    @Column(nullable = false, name = "creation_date")
+    private Date creationDate;
+
+    @Column(nullable = false, name = "is_public")
+    private Boolean isPublic;
+
     @ManyToOne
     @JoinColumn(name = "source", referencedColumnName = "id")
     private Picture source;
 
-    @Column(nullable = false, name = "url")
-    private String url;
-
     public Picture() {
+    }
+
+    public Picture(User creator, String name, String url, Date creationDate, Boolean isPublic) {
+        this.creator = creator;
+        this.name = name;
+        this.url = url;
+        this.creationDate = creationDate;
+        this.isPublic = isPublic;
     }
 
     public Long getId() {
@@ -52,19 +67,35 @@ public class Picture {
         this.name = name;
     }
 
-    public Picture getSource() {
-        return source;
-    }
-
-    public void setSource(Picture source) {
-        this.source = source;
-    }
-
     public String getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Boolean getPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(Boolean aPublic) {
+        isPublic = aPublic;
+    }
+
+    public Picture getSource() {
+        return source;
+    }
+
+    public void setSource(Picture source) {
+        this.source = source;
     }
 }

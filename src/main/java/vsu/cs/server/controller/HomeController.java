@@ -17,7 +17,8 @@ import java.security.Principal;
 
 @Controller
 @Api(description = "picture controller")
-public class MainController {
+@RequestMapping("/home")
+public class HomeController {
     @Autowired
     private PictureService pictureService;
     @Autowired
@@ -25,7 +26,7 @@ public class MainController {
     @Autowired
     private RoleService roleService;
 
-    @GetMapping("/")
+    @GetMapping("/main")
     public String mainGet(
             Principal principal,
             Model model) {
@@ -35,6 +36,19 @@ public class MainController {
         }
         model.addAttribute("isUser", WebSecurityConfig.isUser());
         model.addAttribute("isAdmin", WebSecurityConfig.isAdmin());
-        return "redirect:/home/main";
+        return "home/main";
+    }
+
+    @GetMapping("/about")
+    public String aboutGet(
+            Principal principal,
+            Model model) {
+        if (principal != null) {
+            User currUser = userService.getByLogin(principal.getName());
+            model.addAttribute("currUser", currUser);
+        }
+        model.addAttribute("isUser", WebSecurityConfig.isUser());
+        model.addAttribute("isAdmin", WebSecurityConfig.isAdmin());
+        return "home/about";
     }
 }

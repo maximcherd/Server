@@ -19,7 +19,7 @@ import java.security.Principal;
 @Controller
 @Api(description = "user controller")
 @RequestMapping("/authentication")
-public class LoginController {
+public class AuthenticationController {
     private static final String C_ERROR_PASSWORD = "пароли не совпадают";
     private static final String C_ERROR_LOGIN = "логин занят";
 
@@ -35,10 +35,13 @@ public class LoginController {
     public String registrationGet(
             Principal principal,
             Model model) {
-        User currUser = userService.getByLogin(principal.getName());
+        if (principal != null) {
+            User currUser = userService.getByLogin(principal.getName());
+            model.addAttribute("currUser", currUser);
+        }
         model.addAttribute("user", WebSecurityConfig.isUser());
         model.addAttribute("admin", WebSecurityConfig.isAdmin());
-        return "registration/registration";
+        return "authentication/registration";
     }
 
     @PostMapping("/registration")
@@ -51,16 +54,19 @@ public class LoginController {
             @RequestParam String phone,
             Principal principal,
             Model model) {
-        User currUser = userService.getByLogin(principal.getName());
+        if (principal != null) {
+            User currUser = userService.getByLogin(principal.getName());
+            model.addAttribute("currUser", currUser);
+        }
         model.addAttribute("user", WebSecurityConfig.isUser());
         model.addAttribute("admin", WebSecurityConfig.isAdmin());
-        if (password.equals(passwordConfirm)) {
-            model.addAttribute("error_password", C_ERROR_PASSWORD);
+        if (!password.equals(passwordConfirm)) {
+            model.addAttribute("error", C_ERROR_PASSWORD);
             return "authentication/registration";
         }
         User user = new User(login, password, name, mail, phone);
         if (!userService.addNew(user)) {
-            model.addAttribute("error_login", C_ERROR_LOGIN);
+            model.addAttribute("error", C_ERROR_LOGIN);
             return "authentication/registration";
         }
         return "redirect:/home/main";
