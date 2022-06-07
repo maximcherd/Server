@@ -1,10 +1,7 @@
 package vsu.cs.server.model;
 
-import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Null;
 
 @Entity
 @Table(name = "picture")
@@ -27,4 +24,47 @@ public class Picture {
 
     @Column(nullable = false, name = "url")
     private String url;
+
+    public Picture() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Picture getSource() {
+        return source;
+    }
+
+    public void setSource(Picture source) {
+        this.source = source;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 }
