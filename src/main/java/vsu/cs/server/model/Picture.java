@@ -40,6 +40,14 @@ public class Picture {
         this.source = null;
     }
 
+    public Picture(User creator, String url, Date creationDate, Boolean isPublic, Picture source) {
+        this.creator = creator;
+        this.url = url;
+        this.creationDate = creationDate;
+        this.isPublic = isPublic;
+        this.source = source;
+    }
+
     public Long getId() {
         return id;
     }

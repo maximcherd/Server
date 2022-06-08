@@ -15,7 +15,11 @@ import vsu.cs.server.service.PictureService;
 import vsu.cs.server.service.RoleService;
 import vsu.cs.server.service.UserService;
 import vsu.cs.server.utils.FileUploadUtil;
+import vsu.cs.server.utils.image_processing.BasicImageProcessingUtil;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.security.Principal;
 import java.time.LocalDateTime;
@@ -90,14 +94,59 @@ public class PictureController {
     public String changeGet(
             @PathVariable("id") Long id,
             Principal principal,
-            Model model) {
+            Model model) throws IOException {
+        User creator = null;
         if (principal != null) {
             User currUser = userService.getByLogin(principal.getName());
             model.addAttribute("currUser", currUser);
+            creator = currUser;
         }
         model.addAttribute("isUser", WebSecurityConfig.isUser());
         model.addAttribute("isAdmin", WebSecurityConfig.isAdmin());
         model.addAttribute("picture", pictureService.getById(id));
+        model.addAttribute("buffer", pictureService.getById(id));
+        BasicImageProcessingUtil util = new BasicImageProcessingUtil();
+        String path = "user-photos/" + creator.getId() + "/";
+        String fileName = "buffer.jpg";
+        File outputfile = new File(path + fileName);
+        BufferedImage image = util.getImage(path + fileName);
+        ImageIO.write(image, "jpg", outputfile);
         return "picture/change";
     }
+
+    @PostMapping("/change/{id}")
+    public String changePost(
+            @PathVariable("id") Long id,
+            @RequestParam Float coefficient,
+            @RequestParam String action,
+            Principal principal,
+            Model model) throws IOException {
+        User creator = null;
+        if (principal != null) {
+            User currUser = userService.getByLogin(principal.getName());
+            model.addAttribute("currUser", currUser);
+            creator = currUser;
+        }
+        model.addAttribute("isUser", WebSecurityConfig.isUser());
+        model.addAttribute("isAdmin", WebSecurityConfig.isAdmin());
+        model.addAttribute("picture", pictureService.getById(id));
+
+        BasicImageProcessingUtil util = new BasicImageProcessingUtil();
+        String path = "user-photos/" + creator.getId() + "/";
+        String fileName = "buffer.jpg";
+        BufferedImage image = util.getImage(path + fileName);
+        if (action.equals("save")) {
+            Picture picture = new Picture(creator, pictureService.getById(id).getUrl(), new Date(), true, pictureService.getById(id));
+            File outputfile = new File(path + "buffer" + picture.getId());
+            ImageIO.write(image, "jpg", outputfile);
+            return "redirect:/picture/info/" + picture.getId();
+        }
+        File outputfile = new File(path + fileName);
+        image = util.editImage(image, coefficient);
+        ImageIO.write(image, "jpg", outputfile);
+        Picture buffer = new Picture(creator, fileName, new Date(), true);
+        model.addAttribute("buffer", buffer);
+        return "picture/change";
+    }
+
 }
