@@ -28,4 +28,8 @@ public class PictureService {
     public List<Picture> getAll() {
         return this.pictureRepository.findAll();
     }
+
+    public Picture getById(Long id) {
+        return this.pictureRepository.getById(id);
+    }
 }

@@ -39,7 +39,7 @@ public class User implements UserDetails {
     private Role role;
 
     @Transient
-    public String getPhotosImagePath() {
+    public String path() {
         return "/user-photos/" + id + "/";
     }
 

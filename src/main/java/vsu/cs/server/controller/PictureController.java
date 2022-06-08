@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import vsu.cs.server.config.WebSecurityConfig;
 import vsu.cs.server.model.Picture;
@@ -72,5 +69,35 @@ public class PictureController {
         FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
 
         return "picture/add";
+    }
+
+    @GetMapping("/info/{id}")
+    public String infoGet(
+            @PathVariable("id") Long id,
+            Principal principal,
+            Model model) {
+        if (principal != null) {
+            User currUser = userService.getByLogin(principal.getName());
+            model.addAttribute("currUser", currUser);
+        }
+        model.addAttribute("isUser", WebSecurityConfig.isUser());
+        model.addAttribute("isAdmin", WebSecurityConfig.isAdmin());
+        model.addAttribute("picture", pictureService.getById(id));
+        return "picture/info";
+    }
+
+    @GetMapping("/change/{id}")
+    public String changeGet(
+            @PathVariable("id") Long id,
+            Principal principal,
+            Model model) {
+        if (principal != null) {
+            User currUser = userService.getByLogin(principal.getName());
+            model.addAttribute("currUser", currUser);
+        }
+        model.addAttribute("isUser", WebSecurityConfig.isUser());
+        model.addAttribute("isAdmin", WebSecurityConfig.isAdmin());
+        model.addAttribute("picture", pictureService.getById(id));
+        return "picture/change";
     }
 }
