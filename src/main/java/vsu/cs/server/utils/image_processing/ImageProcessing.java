@@ -5,5 +5,5 @@ import java.io.IOException;
 
 public interface ImageProcessing {
     BufferedImage getImage(String path) throws IOException;
-    BufferedImage editImage(BufferedImage image, Float coefficient);
+    BufferedImage editImage(BufferedImage image, Integer coefficient);
 }

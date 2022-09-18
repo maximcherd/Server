@@ -31,6 +31,8 @@ import java.util.Objects;
 @Api(description = "picture controller")
 @RequestMapping("/picture")
 public class PictureController {
+    private static final String C_ERROR_PICTURE_SIZE = "размер изображения слишком большой";
+
     @Autowired
     private PictureService pictureService;
     @Autowired
@@ -66,12 +68,11 @@ public class PictureController {
         model.addAttribute("isUser", WebSecurityConfig.isUser());
         model.addAttribute("isAdmin", WebSecurityConfig.isAdmin());
         Date creationDate = new Date();
-        String fileName = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+        String fileName = creationDate.getTime() + "." + "png";
         Picture picture = new Picture(creator, fileName, creationDate, isPublic);
         pictureService.add(picture);
-        String uploadDir = "user-photos/" + creator.getId();
+        String uploadDir = "user-photos/" + creator.getId().toString();
         FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-
         return "picture/add";
     }
 
@@ -87,7 +88,28 @@ public class PictureController {
         model.addAttribute("isUser", WebSecurityConfig.isUser());
         model.addAttribute("isAdmin", WebSecurityConfig.isAdmin());
         model.addAttribute("picture", pictureService.getById(id));
+        model.addAttribute("pictures", pictureService.getByPicture(id));
         return "picture/info";
+    }
+
+    @PostMapping("/info/{id}")
+    public String infoPost(
+            @PathVariable("id") Long id,
+            @RequestParam String action,
+            Principal principal,
+            Model model) {
+        if (principal != null) {
+            User currUser = userService.getByLogin(principal.getName());
+            model.addAttribute("currUser", currUser);
+        }
+        model.addAttribute("isUser", WebSecurityConfig.isUser());
+        model.addAttribute("isAdmin", WebSecurityConfig.isAdmin());
+        model.addAttribute("picture", pictureService.getById(id));
+        model.addAttribute("pictures", pictureService.getByPicture(id));
+        if (action.equals("delete")) {
+            pictureService.remove(pictureService.getById(id));
+        }
+        return "redirect:/";
     }
 
     @GetMapping("/change/{id}")
@@ -107,17 +129,17 @@ public class PictureController {
         model.addAttribute("buffer", pictureService.getById(id));
         BasicImageProcessingUtil util = new BasicImageProcessingUtil();
         String path = "user-photos/" + creator.getId() + "/";
-        String fileName = "buffer.jpg";
+        String fileName = "buffer.png";
         File outputfile = new File(path + fileName);
-        BufferedImage image = util.getImage(path + fileName);
-        ImageIO.write(image, "jpg", outputfile);
+        BufferedImage image = util.getImage(path + pictureService.getById(id).getUrl());
+        ImageIO.write(image, "png", outputfile);
         return "picture/change";
     }
 
     @PostMapping("/change/{id}")
     public String changePost(
             @PathVariable("id") Long id,
-            @RequestParam Float coefficient,
+            @RequestParam Integer coefficient,
             @RequestParam String action,
             Principal principal,
             Model model) throws IOException {
@@ -133,20 +155,21 @@ public class PictureController {
 
         BasicImageProcessingUtil util = new BasicImageProcessingUtil();
         String path = "user-photos/" + creator.getId() + "/";
-        String fileName = "buffer.jpg";
+        String fileName = "buffer.png";
         BufferedImage image = util.getImage(path + fileName);
         if (action.equals("save")) {
-            Picture picture = new Picture(creator, pictureService.getById(id).getUrl(), new Date(), true, pictureService.getById(id));
-            File outputfile = new File(path + "buffer" + picture.getId());
-            ImageIO.write(image, "jpg", outputfile);
+            Date date = new Date();
+            Picture picture = new Picture(creator, date.getTime() + ".png", new Date(), true, pictureService.getById(id));
+            pictureService.add(picture);
+            File outputfile = new File(path + date.getTime() + ".png");
+            ImageIO.write(image, "png", outputfile);
             return "redirect:/picture/info/" + picture.getId();
         }
         File outputfile = new File(path + fileName);
         image = util.editImage(image, coefficient);
-        ImageIO.write(image, "jpg", outputfile);
+        ImageIO.write(image, "png", outputfile);
         Picture buffer = new Picture(creator, fileName, new Date(), true);
         model.addAttribute("buffer", buffer);
         return "picture/change";
     }
-
 }

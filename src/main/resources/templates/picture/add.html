@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Главная</title>
+    <title>ShapeShifter: Добавить изображение</title>
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
           integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
@@ -23,8 +23,10 @@
             <form method="post" th:action="${#httpServletRequest.requestURI}" enctype="multipart/form-data" class="col-lg-6 col-md-8 mx-auto">
                 <h1 class="fw-light">Загрузка изображений</h1>
                 <input type="file" name="image" accept="image/png, image/jpeg" class="btn btn-secondary my-2">
-                <input type="checkbox" name="isPublic" id="isPublic" checked class="btn btn-secondary my-2">
-                <label for="isPublic">публичное</label>
+                <input type="radio" name="isPublic" id="isPublic1" value="true" checked class="btn btn-secondary my-2">
+                <label for="isPublic1">публичное</label>
+                <input type="radio" name="isPublic" id="isPublic2" value="false" class="btn btn-secondary my-2">
+                <label for="isPublic2">приватное</label>
                 <p>
                     <button type="submit" class="btn btn-primary my-2">Загрузить</button>
                 </p>

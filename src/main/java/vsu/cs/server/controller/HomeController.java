@@ -36,6 +36,7 @@ public class HomeController {
         }
         model.addAttribute("isUser", WebSecurityConfig.isUser());
         model.addAttribute("isAdmin", WebSecurityConfig.isAdmin());
+        model.addAttribute("pictures", pictureService.getByRole(WebSecurityConfig.isUser(), WebSecurityConfig.isAdmin(), 6));
         return "home/main";
     }
 

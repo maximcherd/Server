@@ -10,13 +10,13 @@
                 <li class="nav-item">
                     <a th:href="@{/home/main}"
                        th:class="'nav-link' + ${#httpServletRequest.requestURI == '/home/main' ? ' active' : ''}">
-                        Главная
+                        Лента
                     </a>
                 </li>
-                <li th:if="${isUser} or ${isAdmin}" class="nav-item">
-                    <a th:href="@{/picture/album}"
-                       th:class="'nav-link' + ${#httpServletRequest.requestURI == '/picture/album' ? ' active' : ''}">
-                        Лента
+                <li class="nav-item">
+                    <a th:href="@{/home/about}"
+                       th:class="'nav-link' + ${#httpServletRequest.requestURI == '/home/about' ? ' active' : ''}">
+                        О проекте
                     </a>
                 </li>
                 <li th:if="${isUser} or ${isAdmin}" class="nav-item">
@@ -25,10 +25,9 @@
                         Загрузить
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a th:href="@{/home/about}"
-                       th:class="'nav-link' + ${#httpServletRequest.requestURI == '/home/about' ? ' active' : ''}">
-                        О проекте
+                <li th:if="${isAdmin}" class="nav-item">
+                    <a th:href="@{/admin/users}" class="nav-link">
+                        Пользователи
                     </a>
                 </li>
             </ul>
@@ -45,8 +44,14 @@
                             Зарегистрироваться
                         </a>
                     </li>
-                    <li th:if="${isUser} or ${isAdmin}" class="nav-item">
-                        <a th:href="@{/profile/user}"
+                    <li th:if="${isUser}" class="nav-item">
+                        <a th:href="@{/user/profile}"
+                           th:text="${currUser.login}"
+                           class="nav-link">
+                        </a>
+                    </li>
+                    <li th:if="${isAdmin}" class="nav-item">
+                        <a th:href="@{/admin/profile}"
                            th:text="${currUser.login}"
                            class="nav-link">
                         </a>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Главная</title>
+    <title>ShapeShifter: Редактирование</title>
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
           integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
@@ -29,34 +29,86 @@
 
     <div class="row mb-2">
         <div class="col-md-6">
-            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                <div class="col p-4 d-flex flex-column position-static">
-                    <h3 th:text="${picture.creator.name}" class="mb-0"></h3>
-                    <div th:text="${picture.creationDate}" class="mb-1 text-muted"></div>
-<!--                    info?-->
-                </div>
-                <div class="col-auto d-none d-lg-block">
-                    <img th:src="${picture.creator.path} + ${picture.url}">
+            <div class="card shadow-sm">
+                <img class="bd-placeholder-img card-img-top" width="90%"
+                     xmlns="http://www.w3.org/2000/svg"
+                     preserveAspectRatio="xMidYMid slice" focusable="false"
+                     th:src="${picture.creator.path} + ${picture.url}"
+                />
+
+                <div class="card-body">
+                    <p class="card-text">
+                        <h3 th:text="${picture.creator.name}" class="mb-0"></h3>
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small th:text="${picture.creationDate}" class="text-muted"></small>
+                    </div>
                 </div>
             </div>
         </div>
+
         <div class="col-md-6">
-            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-                <form method="post" th:action="${#httpServletRequest.requestURI}" class="col p-4 d-flex flex-column position-static">
-                    <h3 class="mb-0">Редактирование</h3>
-                    <div class="mb-1 text-muted">BasicUtil</div>
-                    <input name="coefficient" type="range" min="0" max="100" step="1" value="0">
-                    <p>
-                        <button type="submit" class="btn btn-primary my-2">Применить</button>
-                        <a href="#" class="btn btn-secondary my-2">Сохранить</a>
+            <div class="card shadow-sm">
+                <img class="bd-placeholder-img card-img-top" width="90%"
+                     xmlns="http://www.w3.org/2000/svg"
+                     preserveAspectRatio="xMidYMid slice" focusable="false"
+                     th:src="${buffer.creator.path} + ${buffer.url}"
+                />
+
+                <div class="card-body">
+                    <p class="card-text">
+                        <h3 class="mb-0">BasicUtil</h3>
                     </p>
-                </form>
-                <div class="col-auto d-none d-lg-block">
-                    <img th:src="${buffer.creator.path} + ${buffer.url}">
+                    <form method="post" th:action="${#httpServletRequest.requestURI}" class="col p-4 d-flex flex-column position-static">
+                        <input name="coefficient" type="range" min="0" max="100" step="1" value="0">
+                        <p>
+                            <button type="submit" name="action" value="edit" class="btn btn-primary my-2">Применить</button>
+                            <button type="submit" name="action" value="save" class="btn btn-secondary my-2">Сохранить</button>
+<!--                            <a href="#" class="btn btn-secondary my-2">Сохранить</a>-->
+                        </p>
+                    </form>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">Редактирование</small>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+<!--    <div class="row mb-2">-->
+<!--        <div class="col-md-6">-->
+<!--            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">-->
+<!--                <div class="col p-4 d-flex flex-column position-static">-->
+<!--                    <h3 th:text="${picture.creator.name}" class="mb-0"></h3>-->
+<!--                    <div th:text="${picture.creationDate}" class="mb-1 text-muted"></div>-->
+<!--&lt;!&ndash;                    info?&ndash;&gt;-->
+<!--                </div>-->
+<!--                <div class="col-auto d-none d-lg-block">-->
+<!--                    <img th:src="${picture.creator.path} + ${picture.url}"-->
+<!--                         width="100%" height="225"-->
+<!--                    >-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-md-6">-->
+<!--            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">-->
+<!--                <form method="post" th:action="${#httpServletRequest.requestURI}" class="col p-4 d-flex flex-column position-static">-->
+<!--                    <h3 class="mb-0">Редактирование</h3>-->
+<!--                    <div class="mb-1 text-muted">BasicUtil</div>-->
+<!--                    <input name="coefficient" type="range" min="0" max="100" step="1" value="0">-->
+<!--                    <p>-->
+<!--                        <button type="submit" class="btn btn-primary my-2">Применить</button>-->
+<!--                        <a href="#" class="btn btn-secondary my-2">Сохранить</a>-->
+<!--                    </p>-->
+<!--                </form>-->
+<!--                <div class="col-auto d-none d-lg-block">-->
+<!--                    <img th:src="${buffer.creator.path} + ${buffer.url}"-->
+<!--                         width="100%" height="225"-->
+<!--                    >-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 
 </main>
 </body>

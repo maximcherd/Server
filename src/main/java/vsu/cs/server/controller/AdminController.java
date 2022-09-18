@@ -15,6 +15,7 @@ import vsu.cs.server.service.PictureService;
 import vsu.cs.server.service.RoleService;
 import vsu.cs.server.service.UserService;
 
+import java.io.File;
 import java.security.Principal;
 
 @Controller
@@ -27,6 +28,20 @@ public class AdminController {
     private UserService userService;
     @Autowired
     private RoleService roleService;
+
+    @GetMapping("/profile")
+    public String profileGet(
+            Principal principal,
+            Model model) {
+        if (principal != null) {
+            User currUser = userService.getByLogin(principal.getName());
+            model.addAttribute("currUser", currUser);
+            model.addAttribute("pictures", pictureService.getByUser(currUser.getId()));
+        }
+        model.addAttribute("isUser", WebSecurityConfig.isUser());
+        model.addAttribute("isAdmin", WebSecurityConfig.isAdmin());
+        return "user/profile";
+    }
 
     @GetMapping("/users")
     public String usersGet(
@@ -55,9 +70,10 @@ public class AdminController {
         model.addAttribute("isUser", WebSecurityConfig.isUser());
         model.addAttribute("isAdmin", WebSecurityConfig.isAdmin());
         if (action.equals("delete")) {
+            pictureService.removeByUser(userService.getById(id));
             userService.remove(userService.getById(id));
         }
-        return "redirect:admin/users";
+        return "redirect:/admin/users";
     }
 }
 
